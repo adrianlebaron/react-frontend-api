@@ -10,12 +10,25 @@ export default class ApiPost extends Component {
       rating: 0
     }
     this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   handleChange(event){
-    this.setState({title: event.target.value})
-    this.setState({rating: event.target.value})
-    console.log(this.state)
+    this.setState({[event.target.name]: event.target.value})
+  }
+  handleSubmit(event) {
+    event.preventDefault();
+    let title = this.state.title;
+    let rating = this.state.rating;
+    fetch('http://localhost:5000/movies/input', {
+      method: "POST",
+      headers: {
+      'Content-Type': 'application/json'
+      },
+      body:JSON.stringify({title:title,rating:rating})
+    }).then((rs)=> rs.json())
+    .then(responseData => {return responseData;})
+    .catch((err) => console.log(err))
   }
   render() {
     return (
@@ -24,12 +37,13 @@ export default class ApiPost extends Component {
         <form onSubmit={this.handleSubmit}>
           <label>
               Title:
-              <input type="text" title={this.state.value} onChange={this.handleChange} />
+              <input name="title" type="text" value={this.state.title} onChange={this.handleChange} />
           </label>
           <label>
               Rating:
-              <input type="integer" rating={this.state.value} onChange={this.handleChange} />
+              <input name="rating" type="integer" value={this.state.rating} onChange={this.handleChange} />
           </label>
+          <input type="submit" value="Submit" />
         </form>
       </div>
     );

@@ -10,7 +10,7 @@ export default class ApiFetch extends Component {
   }
 
   componentWillMount() {
-    fetch('https://ads-python-flask-app.herokuapp.com/return_emails',{
+    fetch('https://git.heroku.com/ad-python-andrew2nd.git/return/movies',{
       method: 'GET',
       headers: {
         "accept": "application/json",
@@ -18,21 +18,23 @@ export default class ApiFetch extends Component {
       }
     })
     .then(response => { return response.json();})
-    .then(responseData => {console.log(responseData); return responseData;})
+    .then(responseData => {return responseData;})
     .then(data => {this.setState({emails: data});})
 
     .catch(err => {
-      console.log("fetch error" + err)
+      console.log("Fetch error" + err)
     });
   }
   render() {
     return (
-      <div className='apiCaller'>
-        <h1>This is My awesome Api Caller</h1>
-        <h3>Please mess with me more</h3>
-         {this.state.emails.map((email, index) => (
-          <p key={index}> Email: {email} </p>
-         ))}
+      <div>
+        <h1>HERE ARE THE CURRENT MOVIES</h1>
+        {this.state.movies.map((data, rating, index) => (
+          <div key={index}>
+          <p>Title: {data[0]}</p>
+          <p>Rating: {data[1]}</p>
+          </div>
+        ))}
       </div>
     );
   }
